@@ -173,14 +173,6 @@
   .search::placeholder{ color: rgba(242,234,217,0.35); }
   .search:focus{ border-color: var(--brass); }
 
-  .sort-caption{
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(242,234,217,0.5);
-  }
-
   /* ---------- Gallery ---------- */
   .gallery{
     max-width: 1100px;
@@ -514,16 +506,8 @@
 
 <div class="controls">
   <div class="tabs-wrap">
-    <div class="tabs" id="tabs-kingdom">
-      <button class="tab active" data-kingdom="all">Tout</button>
-      <button class="tab" data-kingdom="Plantes">Plantes</button>
-      <button class="tab" data-kingdom="Animaux">Animaux</button>
-    </div>
+    <div class="tabs" id="tabs-main"></div>
     <div class="tabs tabs-sub" id="tabs-group" hidden></div>
-  </div>
-  <div class="tabs-wrap">
-    <span class="sort-caption">Trier par</span>
-    <div class="tabs" id="tabs-sort"></div>
   </div>
   <input class="search" id="search" type="text" placeholder="Rechercher un genre, un âge...">
 </div>
@@ -769,193 +753,6 @@ const SPECIMENS = [
     notes: "",
     images: ["IDCRI_011_1.jpg", "IDCRI_011_2.jpg"],
     tags: ["Apiocrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "CRI_012",
-    kingdom: "Animaux",
-    group: "Crinoïdes",
-    genus: "Pentacrinites",
-    species: "sp.",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "10 mm",
-    condition: "Bonne condition.",
-    notes: "",
-    images: ["IDCRI_012.jpg"],
-    tags: ["Pentacrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "CRI_013",
-    kingdom: "Animaux",
-    group: "Crinoïdes",
-    genus: "Pentacrinites",
-    species: "sp.",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "8 mm",
-    condition: "",
-    notes: "Présence de nombreux autres restes sur la même gangue.",
-    images: ["IDCRI_013.jpg"],
-    tags: ["Pentacrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "CRI_014",
-    kingdom: "Animaux",
-    group: "Crinoïdes",
-    genus: "Pentacrinites",
-    species: "sp.",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "9 mm",
-    condition: "",
-    notes: "",
-    images: ["IDCRI_014.jpg"],
-    tags: ["Pentacrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "CRI_015",
-    kingdom: "Animaux",
-    group: "Crinoïdes",
-    genus: "Pentacrinites",
-    species: "sp.",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "8 mm",
-    condition: "",
-    notes: "Présence de IDBEL_001 sur le même bloc.",
-    images: ["IDCRI_015.jpg"],
-    tags: ["Pentacrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "CRI_016",
-    kingdom: "Animaux",
-    group: "Crinoïdes",
-    genus: "Pentacrinites",
-    species: "sp.",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2025",
-    size: "7 mm",
-    condition: "",
-    notes: "",
-    images: ["IDCRI_016.jpg"],
-    tags: ["Pentacrinites", "Jurassique", "Entroque"]
-  },
-  {
-    id: "BEL_001",
-    kingdom: "Animaux",
-    group: "Bélemnites",
-    genus: "Belemnoidea",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "14 mm",
-    condition: "",
-    notes: "Présence de IDCRI_015 sur le même bloc.",
-    images: ["IDBEL_001.jpg"],
-    tags: ["Bélemnites", "Jurassique"]
-  },
-  {
-    id: "BEL_002",
-    kingdom: "Animaux",
-    group: "Bélemnites",
-    genus: "Belemnoidea",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2026",
-    size: "26 mm",
-    condition: "",
-    notes: "",
-    images: ["IDBEL_002.jpg"],
-    tags: ["Bélemnites", "Jurassique"]
-  },
-  {
-    id: "BEL_003",
-    kingdom: "Animaux",
-    group: "Bélemnites",
-    genus: "Belemnoidea",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2025",
-    size: "31 mm",
-    condition: "",
-    notes: "",
-    images: ["IDBEL_003.jpg"],
-    tags: ["Bélemnites", "Jurassique"]
-  },
-  {
-    id: "PEC_001",
-    kingdom: "Animaux",
-    group: "Pecten",
-    genus: "Pecten",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2025",
-    size: "16 mm",
-    condition: "",
-    notes: "",
-    images: ["IDPEC_001.jpg"],
-    tags: ["Pecten", "Jurassique"]
-  },
-  {
-    id: "PEC_002",
-    kingdom: "Animaux",
-    group: "Pecten",
-    genus: "Pecten",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2025",
-    size: "16 mm",
-    condition: "",
-    notes: "",
-    images: ["IDPEC_002.jpg"],
-    tags: ["Pecten", "Jurassique"]
-  },
-  {
-    id: "RHY_001",
-    kingdom: "Animaux",
-    group: "Brachiopodes",
-    genus: "Rhynchonelle",
-    species: "",
-    author: "",
-    stage: "Hettangien-Sinémurien-Carixien",
-    formation: "",
-    locality: "Savoie",
-    date: "2025",
-    size: "11 mm",
-    condition: "",
-    notes: "",
-    images: ["IDRHY_001_up.jpg", "IDRHY_001_front.jpg","IDRHY_001_down.jpg"],
-    tags: ["Rhynchonelles", "Jurassique"]
   },
   {
     id: "TER_001",
@@ -1300,10 +1097,10 @@ const SPECIMENS = [
   {
     id: "PLA-001",
     kingdom: "Plantes",
-    group: "Stenophyllum",
-    genus: "Stenophyllum",
+    group: "Sphenophyllum",
+    genus: "Sphenophyllum",
     species: "oblongifolium",
-    author: "",
+    author: "(Germar & Kaulfuss) Unger, 1850",
     stage: "",
     formation: "",
     locality: "",
@@ -1320,7 +1117,7 @@ const SPECIMENS = [
     group: "Pecopteris",
     genus: "Pecopteris",
     species: "cyathea",
-    author: "",
+    author: "Brongniart, 1828",
     stage: "",
     formation: "",
     locality: "",
@@ -1355,8 +1152,8 @@ const SPECIMENS = [
 let activeKingdom = "all";
 let activeGroup = "all";
 let searchTerm = "";
-let sortBy = "default"; // "default" | "genus" | "date"
-let sortDir = "asc";    // "asc" | "desc"
+let sortBy = "genus"; // "genus" | "date"
+let sortDir = "asc";  // "asc" | "desc"
 
 function renderStats(){
   const total = SPECIMENS.length;
@@ -1383,47 +1180,50 @@ function parseDateValue(d){
 }
 
 function sortSpecimens(list){
-  if(sortBy === "default") return list;
   const sorted = [...list];
   sorted.sort((a, b) => {
     if(sortBy === "genus"){
       const cmp = a.genus.localeCompare(b.genus, "fr", { sensitivity: "base" });
       return sortDir === "asc" ? cmp : -cmp;
     }
-    if(sortBy === "date"){
-      const da = parseDateValue(a.date);
-      const db = parseDateValue(b.date);
-      if(da === null && db === null) return 0;
-      if(da === null) return 1;
-      if(db === null) return -1;
-      return sortDir === "asc" ? da - db : db - da;
-    }
-    return 0;
+    // sortBy === "date"
+    const da = parseDateValue(a.date);
+    const db = parseDateValue(b.date);
+    if(da === null && db === null) return 0;
+    if(da === null) return 1;
+    if(db === null) return -1;
+    return sortDir === "asc" ? da - db : db - da;
   });
   return sorted;
 }
 
-function renderSortTabs(){
-  const wrap = document.getElementById("tabs-sort");
+function renderMainTabs(){
+  const wrap = document.getElementById("tabs-main");
   const items = [
-    { key: "default", label: "Défaut", title: "Ordre du catalogue" },
-    { key: "genus", label: sortBy === "genus" ? `Genre ${sortDir === "asc" ? "↑" : "↓"}` : "Genre", title: "Trier par genre, tous règnes confondus — cliquer pour inverser l'ordre" },
-    { key: "date", label: sortBy === "date" ? `Date ${sortDir === "asc" ? "↑" : "↓"}` : "Date", title: "Trier par date de récolte — cliquer pour inverser l'ordre" },
+    { type: "sort", key: "genus", label: sortBy === "genus" ? `Genre ${sortDir === "asc" ? "↑" : "↓"}` : "Genre", title: "Trier par genre, tous règnes confondus — cliquer pour inverser l'ordre", active: sortBy === "genus" },
+    { type: "sort", key: "date", label: sortBy === "date" ? `Date ${sortDir === "asc" ? "↑" : "↓"}` : "Date", title: "Trier par date de récolte — cliquer pour inverser l'ordre", active: sortBy === "date" },
+    { type: "kingdom", key: "all", label: "Tout", active: activeKingdom === "all" },
+    { type: "kingdom", key: "Plantes", label: "Plantes", active: activeKingdom === "Plantes" },
+    { type: "kingdom", key: "Animaux", label: "Animaux", active: activeKingdom === "Animaux" },
   ];
-  wrap.innerHTML = items.map(it => `<button class="tab ${sortBy === it.key ? "active" : ""}" data-sort="${it.key}" title="${it.title}">${it.label}</button>`).join("");
+  wrap.innerHTML = items.map(it => `<button class="tab ${it.active ? "active" : ""}" data-type="${it.type}" data-key="${it.key}"${it.title ? ` title="${it.title}"` : ""}>${it.label}</button>`).join("");
   wrap.querySelectorAll(".tab").forEach(btn => {
     btn.addEventListener("click", () => {
-      const key = btn.dataset.sort;
-      if(key === "default"){
-        sortBy = "default";
-        sortDir = "asc";
-      } else if(sortBy === key){
-        sortDir = sortDir === "asc" ? "desc" : "asc";
+      const type = btn.dataset.type;
+      const key = btn.dataset.key;
+      if(type === "sort"){
+        if(sortBy === key){
+          sortDir = sortDir === "asc" ? "desc" : "asc";
+        } else {
+          sortBy = key;
+          sortDir = "asc";
+        }
       } else {
-        sortBy = key;
-        sortDir = "asc";
+        activeKingdom = key;
+        activeGroup = "all";
+        renderSubTabs();
       }
-      renderSortTabs();
+      renderMainTabs();
       render();
     });
   });
@@ -1440,8 +1240,7 @@ function filterByTag(tag){
   document.getElementById("search").value = tag;
   activeKingdom = "all";
   activeGroup = "all";
-  document.querySelectorAll("#tabs-kingdom .tab").forEach(t => t.classList.remove("active"));
-  document.querySelector('#tabs-kingdom .tab[data-kingdom="all"]').classList.add("active");
+  renderMainTabs();
   renderSubTabs();
   render();
 }
@@ -1650,24 +1449,14 @@ document.addEventListener("keydown", e => {
   }
 });
 
-document.getElementById("tabs-kingdom").addEventListener("click", e => {
-  if(!e.target.classList.contains("tab")) return;
-  document.querySelectorAll("#tabs-kingdom .tab").forEach(t => t.classList.remove("active"));
-  e.target.classList.add("active");
-  activeKingdom = e.target.dataset.kingdom;
-  activeGroup = "all";
-  renderSubTabs();
-  render();
-});
-
 document.getElementById("search").addEventListener("input", e => {
   searchTerm = e.target.value;
   render();
 });
 
 renderStats();
+renderMainTabs();
 renderSubTabs();
-renderSortTabs();
 render();
 </script>
 
