@@ -37,6 +37,37 @@
 
   a{ color: inherit; }
 
+  /* ---------- Top bar (À propos) ---------- */
+  .top-bar{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.1rem 1.5rem 0;
+    display:flex;
+    justify-content:flex-end;
+  }
+  .about-btn{
+    display:flex;
+    align-items:center;
+    gap: 0.4rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(176,141,87,0.3);
+    color: rgba(242,234,217,0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .about-btn:hover{ color: var(--paper); border-color: var(--brass); }
+  .about-btn.active{
+    background: var(--brass);
+    color: var(--wood-deep);
+    border-color: var(--brass);
+    font-weight: 500;
+  }
+
   /* ---------- Header / Hero ---------- */
   header.hero{
     padding: 5rem 1.5rem 4rem;
@@ -586,6 +617,10 @@
 </style>
 </head>
 <body>
+
+<div class="top-bar">
+  <button class="about-btn" id="about-btn">👤 À propos</button>
+</div>
 
 <header class="hero">
   <div class="eyebrow">Collection personnelle · Animaux et plantes</div>
@@ -2671,25 +2706,21 @@ function renderMainTabs(){
     { type: "kingdom", key: "all", label: "Tout", active: activeView === "gallery" && activeKingdom === "all" },
     { type: "kingdom", key: "Plantes", label: "Plantes", active: activeView === "gallery" && activeKingdom === "Plantes" },
     { type: "kingdom", key: "Animaux", label: "Animaux", active: activeView === "gallery" && activeKingdom === "Animaux" },
-    { type: "view", key: "about", label: "À propos", active: activeView === "about" },
   ];
   wrap.innerHTML = items.map(it => `<button class="tab ${it.active ? "active" : ""}" data-type="${it.type}" data-key="${it.key}"${it.title ? ` title="${it.title}"` : ""}>${it.label}</button>`).join("");
   wrap.querySelectorAll(".tab").forEach(btn => {
     btn.addEventListener("click", () => {
       const type = btn.dataset.type;
       const key = btn.dataset.key;
+      activeView = "gallery";
       if(type === "sort"){
-        activeView = "gallery";
         if(sortBy === key){
           sortDir = sortDir === "asc" ? "desc" : "asc";
         } else {
           sortBy = key;
           sortDir = "asc";
         }
-      } else if(type === "view"){
-        activeView = "about";
       } else {
-        activeView = "gallery";
         activeKingdom = key;
         activeGroup = "all";
         renderSubTabs();
@@ -2699,6 +2730,8 @@ function renderMainTabs(){
       render();
     });
   });
+
+  document.getElementById("about-btn").classList.toggle("active", activeView === "about");
 }
 
 function applyView(){
@@ -2945,6 +2978,12 @@ document.addEventListener("keydown", e => {
 document.getElementById("search").addEventListener("input", e => {
   searchTerm = e.target.value;
   render();
+});
+
+document.getElementById("about-btn").addEventListener("click", () => {
+  activeView = "about";
+  renderMainTabs();
+  applyView();
 });
 
 renderStats();
