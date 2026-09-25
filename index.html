@@ -1,0 +1,2957 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Répertoire de Fossile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wood: #2b241f;
+    --wood-deep: #221c18;
+    --paper: #f2ead9;
+    --paper-dim: #e8ddc4;
+    --ink: #26201a;
+    --ink-soft: #5a4f42;
+    --brass: #b08d57;
+    --brass-bright: #cda86b;
+    --rust: #8a4a2f;
+    --stratum: #6b7368;
+    --radius: 3px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--wood);
+    background-image:
+      radial-gradient(ellipse at top left, rgba(255,255,255,0.03), transparent 60%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 120px);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; }
+
+  /* ---------- Header / Hero ---------- */
+  header.hero{
+    padding: 5rem 1.5rem 4rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(176,141,87,0.25);
+  }
+
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass-bright);
+    margin-bottom: 1rem;
+  }
+
+  h1.title{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    line-height: 1.05;
+    margin: 0 0 0.8rem;
+    color: var(--paper);
+  }
+  h1.title em{
+    font-style: italic;
+    font-weight: 500;
+    color: var(--brass-bright);
+  }
+
+  .subtitle{
+    max-width: 40ch;
+    margin: 0 auto;
+    color: rgba(242,234,217,0.65);
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+
+  .stats-row{
+    display:flex;
+    gap: 2.5rem;
+    justify-content:center;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .stat{
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .stat .n{
+    display:block;
+    font-size: 1.6rem;
+    color: var(--brass-bright);
+  }
+  .stat .l{
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(242,234,217,0.5);
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 1rem;
+    display:flex;
+    gap: 0.9rem;
+    align-items:flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .tabs-wrap{
+    display:flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .tabs{
+    display:flex;
+    gap: 0.4rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.3rem;
+    border-radius: 999px;
+    border: 1px solid rgba(176,141,87,0.2);
+    width: fit-content;
+  }
+
+  .tabs-sub{
+    background: transparent;
+    border-color: rgba(176,141,87,0.12);
+    padding-left: 0.6rem;
+  }
+  .tabs-sub .tab{
+    font-size: 0.68rem;
+    padding: 0.4rem 0.85rem;
+    color: rgba(242,234,217,0.45);
+  }
+  .tabs-sub .tab.active{
+    background: rgba(176,141,87,0.18);
+    color: var(--brass-bright);
+  }
+  .tabs-sub .tab:hover{ color: var(--paper); }
+  .tab{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    background: transparent;
+    border: none;
+    color: rgba(242,234,217,0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .tab:hover{ color: var(--paper); }
+  .tab.active{
+    background: var(--brass);
+    color: var(--wood-deep);
+    font-weight: 500;
+  }
+
+  .search{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(176,141,87,0.25);
+    color: var(--paper);
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    min-width: 220px;
+    outline: none;
+  }
+  .search::placeholder{ color: rgba(242,234,217,0.35); }
+  .search:focus{ border-color: var(--brass); }
+
+  /* ---------- Gallery ---------- */
+  .gallery{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 6rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.6rem;
+  }
+
+  .empty-state{
+    grid-column: 1/-1;
+    text-align:center;
+    padding: 4rem 1rem;
+    color: rgba(242,234,217,0.4);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .card{
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+  }
+  .card:nth-child(3n+1){ --tilt: -0.6deg; }
+  .card:nth-child(3n+2){ --tilt: 0.4deg; }
+  .card:nth-child(3n){ --tilt: -0.3deg; }
+
+  .card:hover{
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.45);
+  }
+
+  .pin{
+    position:absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--brass-bright), var(--rust) 75%);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.5);
+    z-index: 2;
+  }
+
+  .card-image{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--paper-dim) center/cover no-repeat;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom: 1px dashed rgba(38,32,26,0.25);
+  }
+  .card-image.placeholder{
+    color: rgba(38,32,26,0.3);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    text-align:center;
+    padding: 1rem;
+  }
+  .card-image img{
+    width:100%; height:100%; object-fit: contain;
+  }
+
+  .card-image-count{
+    position:absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(38,32,26,0.65);
+    color: var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    z-index: 2;
+  }
+
+  .card-body{
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .catalog-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--rust);
+    margin-bottom: 0.35rem;
+  }
+
+  .taxon{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.2;
+    margin: 0 0 0.5rem;
+  }
+
+  .meta-line{
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    display:flex;
+    gap: 0.4rem;
+    margin-bottom: 0.15rem;
+  }
+  .meta-line .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--stratum);
+    min-width: 62px;
+  }
+
+  .family-tag{
+    display:inline-block;
+    margin-top: 0.6rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(138,74,47,0.1);
+    color: var(--rust);
+    border: 1px solid rgba(138,74,47,0.25);
+  }
+  .family-tag.rhy{
+    background: rgba(107,115,104,0.12);
+    color: #4d5449;
+    border-color: rgba(107,115,104,0.3);
+  }
+
+  .tags{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.55rem;
+  }
+  .tag-pill{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.03em;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(176,141,87,0.12);
+    color: var(--brass-bright);
+    border: 1px solid rgba(176,141,87,0.3);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .card .tag-pill{
+    color: var(--brass);
+  }
+  .card .tag-pill:hover{
+    background: rgba(176,141,87,0.28);
+    color: var(--wood-deep);
+  }
+  .modal-body .tag-pill:hover{
+    background: rgba(176,141,87,0.28);
+    color: var(--wood-deep);
+  }
+
+  /* ---------- About ---------- */
+  .about-panel{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 6rem;
+  }
+  .about-card{
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: var(--radius);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    padding: 2.4rem 2.2rem;
+    text-align: center;
+    position: relative;
+  }
+  .about-photo{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    margin: 0 auto 1.2rem;
+    background: var(--paper-dim) center/cover no-repeat;
+    border: 3px solid var(--brass);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: rgba(38,32,26,0.3);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-align:center;
+    overflow: hidden;
+  }
+  .about-name{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0 0 0.3rem;
+  }
+  .about-role{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 1.2rem;
+  }
+  .about-bio{
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 50ch;
+    margin: 0 auto 1.8rem;
+  }
+  .about-links{
+    display:flex;
+    gap: 0.7rem;
+    justify-content:center;
+    flex-wrap: wrap;
+    padding-top: 1.4rem;
+    border-top: 1px dashed rgba(38,32,26,0.2);
+  }
+  .about-link{
+    display:flex;
+    align-items:center;
+    gap: 0.5rem;
+    background: rgba(176,141,87,0.1);
+    border: 1px solid rgba(176,141,87,0.3);
+    color: var(--ink);
+    text-decoration:none;
+    padding: 0.5rem 0.9rem 0.5rem 0.5rem;
+    border-radius: 999px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .about-link:hover{
+    background: rgba(176,141,87,0.28);
+    transform: translateY(-2px);
+  }
+  .about-link .icon{
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink: 0;
+  }
+  .about-link .icon svg{ width: 13px; height: 13px; }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    display:none;
+    position: fixed; inset:0;
+    background: rgba(15,12,10,0.75);
+    backdrop-filter: blur(3px);
+    z-index: 50;
+    align-items:center;
+    justify-content:center;
+    padding: 1.5rem;
+  }
+  .modal-backdrop.open{ display:flex; }
+
+  .modal{
+    background: var(--paper);
+    color: var(--ink);
+    max-width: 640px;
+    width:100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: var(--radius);
+    position: relative;
+  }
+  .modal-close{
+    position: absolute;
+    top: 0.8rem; right: 0.8rem;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(38,32,26,0.08);
+    color: var(--ink);
+    font-size: 1.1rem;
+    cursor:pointer;
+    z-index: 3;
+  }
+  .modal-close:hover{ background: rgba(38,32,26,0.15); }
+
+  .modal-image{
+    position: relative;
+    width:100%;
+    aspect-ratio: 16/10;
+    background: var(--paper-dim);
+    overflow: hidden;
+  }
+  .modal-image img{
+    width:100%;
+    height:100%;
+    object-fit: contain;
+    display:block;
+  }
+
+  .modal-nav{
+    position:absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(38,32,26,0.55);
+    color: var(--paper);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index: 3;
+    transition: background 0.2s;
+  }
+  .modal-nav:hover{ background: rgba(38,32,26,0.85); }
+  .modal-nav.prev{ left: 0.7rem; }
+  .modal-nav.next{ right: 0.7rem; }
+
+  .modal-counter{
+    position:absolute;
+    bottom: 0.7rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(38,32,26,0.6);
+    color: var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    z-index: 3;
+  }
+
+  .modal-thumbs{
+    display:flex;
+    gap: 0.4rem;
+    padding: 0.7rem 2rem 0;
+    flex-wrap: wrap;
+  }
+  .modal-thumbs img{
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0.55;
+    border: 2px solid transparent;
+    transition: opacity 0.2s, border-color 0.2s;
+  }
+  .modal-thumbs img:hover{ opacity: 0.85; }
+  .modal-thumbs img.active{
+    opacity: 1;
+    border-color: var(--brass);
+  }
+  .modal-body{ padding: 1.8rem 2rem 2.2rem; }
+  .modal-body .catalog-no{ font-size: 0.75rem; }
+  .modal-body .taxon{ font-size: 1.6rem; margin-bottom: 1rem; }
+
+  .modal-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.9rem 1.5rem;
+    margin-top: 1.2rem;
+    padding-top: 1.2rem;
+    border-top: 1px dashed rgba(38,32,26,0.2);
+  }
+  .modal-grid .field .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--stratum);
+    display:block;
+    margin-bottom: 0.2rem;
+  }
+  .modal-grid .field .v{ font-size: 0.9rem; }
+  .modal-grid .field.full{ grid-column: 1/-1; }
+
+  footer{
+    text-align:center;
+    padding: 2.5rem 1rem 3rem;
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(242,234,217,0.3);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--brass-bright);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Collection personnelle · Animaux et plantes</div>
+  <h1 class="title">Plantes &amp; Animaux <em>fossiles</em></h1>
+  <p class="subtitle">Un catalogue de spécimens récoltés sur le terrain, classés par famille et étage géologique.</p>
+  <div class="stats-row" id="stats-row"></div>
+</header>
+
+<div class="controls" id="controls">
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs-main"></div>
+    <div class="tabs tabs-sub" id="tabs-group" hidden></div>
+  </div>
+  <input class="search" id="search" type="text" placeholder="Rechercher un genre, un âge...">
+</div>
+
+<main class="gallery" id="gallery"></main>
+<section class="about-panel" id="about-panel" hidden></section>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<footer>Cabinet de curiosités — mis à jour manuellement dans specimens.js</footer>
+
+<script>
+/* ============================================================
+   TES SPÉCIMENS : modifie ce tableau pour ajouter tes fossiles.
+   - images : tableau de noms de fichiers dans le dossier /images
+     (ex: ["ter001-a.jpg", "ter001-b.jpg"]). Laisse [] si tu n'as
+     pas encore de photo, un placeholder s'affichera. Avec 2 photos
+     ou plus, une navigation (flèches + vignettes) apparaît.
+   - tags : tableau de mots-clés libres (ex: ["brachiopodes",
+     "ammonites", "jurassique"]). Cliquer sur un tag filtre la
+     collection. Laisse [] si tu n'en veux pas.
+   - family : "Térébratules" ou "Rhynchonelles"
+   ============================================================ */
+const SPECIMENS = [
+    {
+    id: "AMM_001",
+    kingdom: "Animaux",
+    group: "Ammonites",
+    genus: "Ammonitina",
+    species: "indet.",
+    author: "",
+    stage: "Hettangien-Sinémurien-Carixien",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "19 mm",
+    condition: "Très mauvaise condition, difficilement déterminable.",
+    notes: "Peut-être Arnioceras ou Echioceras.",
+    images: ["IDAMM_001_up.jpg", "IDAMM_001_up2.jpg"],
+    tags: ["Ammonite", "Jurassique"]
+  },
+  {
+    id: "AMM_002",
+    kingdom: "Animaux",
+    group: "Ammonites",
+    genus: "Ammonitina",
+    species: "indet.",
+    author: "",
+    stage: "Hettangien-Sinémurien-Carixien",
+    formation: "",
+    locality: "Savoie",
+    date: "2025",
+    size: "17.5 mm",
+    condition: "Très mauvaise condition, difficilement déterminable.",
+    notes: "Peut-être Arnioceras ou Echioceras.",
+    images: ["IDAMM_002_up.jpg", "IDAMM_002_up2.jpg"],
+    tags: ["Ammonite", "Jurassique"]
+  },
+  {
+    id: "COR_001",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "70 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_001_1.jpg", "IDCOR_001_2.jpg", "IDCOR_001_3.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_002",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "60 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_002_1.jpg", "IDCOR_002_2.jpg", "IDCOR_002_3.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_003",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "38 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_003_1.jpg", "IDCOR_003_2.jpg", "IDCOR_003_3.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_004",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "57 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_004_1.jpg", "IDCOR_004_2.jpg", "IDCOR_004_3.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_005",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "16 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_005_1.jpg", "IDCOR_005_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_006",
+    kingdom: "Animaux",
+    group: "Éponge",
+    genus: "Spongiaire",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "22 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_006_1.jpg", "IDCOR_006_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_007",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "21 mm",
+    condition: "",
+    notes: "Identification potentiellement incorrecte.",
+    images: ["IDCOR_007_1.jpg", "IDCOR_007_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "COR_008",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "25 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_008_1.jpg", "IDCOR_008_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_009",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "16 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_009_1.jpg", "IDCOR_009_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "COR_010",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "27 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_010_1.jpg", "IDCOR_010_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_011",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "13 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_011_1.jpg", "IDCOR_011_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_012",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "29 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_012_1.jpg", "IDCOR_012_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_013",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "9 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_013_1.jpg", "IDCOR_013_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "COR_014",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "19 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_014_1.jpg", "IDCOR_014_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_015",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "17 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_015_1.jpg", "IDCOR_015_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_016",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "10 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_016_1.jpg", "IDCOR_016_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_017",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "11 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_017_1.jpg", "IDCOR_017_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_018",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "24 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_018_1.jpg", "IDCOR_018_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_019",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "21 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_019_1.jpg", "IDCOR_019_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_020",
+    kingdom: "Animaux",
+    group: "Stromatoporoïde",
+    genus: "Stromatoporoïde",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "20 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_020_1.jpg", "IDCOR_020_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "COR_021",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "46 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_021_1.jpg", "IDCOR_021_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "COR_022",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "18 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_022_1.jpg", "IDCOR_022_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "COR_023",
+    kingdom: "Animaux",
+    group: "Coraux",
+    genus: "Corail",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "13 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCOR_023_1.jpg", "IDCOR_023_2.jpg"],
+    tags: ["Coraux", "Jurassique"]
+  },
+  {
+    id: "SPO_001",
+    kingdom: "Animaux",
+    group: "Éponges",
+    genus: "Spongiaire",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "11 mm",
+    condition: "",
+    notes: "",
+    images: ["IDSPO_001_1.jpg", "IDSPO_001_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "SPO_002",
+    kingdom: "Animaux",
+    group: "Éponges",
+    genus: "Spongiaire",
+    species: "",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2014-2026",
+    size: "11 m2",
+    condition: "",
+    notes: "",
+    images: ["IDSPO_002_1.jpg", "IDSPO_002_2.jpg"],
+    tags: ["Éponges", "Jurassique"]
+  },
+  {
+    id: "CRI_001",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "25 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans. Calice.",
+    images: ["IDCRI_001_1.jpg", "IDCRI_001_2.jpg", "IDCRI_001_3.jpg", "IDCRI_001_4.jpg"],
+    tags: ["Apiocrinites", "Jurassique"]
+  },
+  {
+    id: "CRI_002",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "9 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_002_1.jpg", "IDCRI_002_2.jpg", "IDCRI_002_3.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_003",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "10.5 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_003_1.jpg", "IDCRI_003_2.jpg", "IDCRI_003_3.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_004",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2026",
+    size: "11.5 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_004_1.jpg", "IDCRI_004_2.jpg", "IDCRI_004_3.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_005",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "19 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans. Gangue contenant d'autres fossiles.",
+    images: ["IDCRI_005_1.jpg", "IDCRI_005_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_006",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2026",
+    size: "20 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_006_1.jpg", "IDCRI_006_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_007",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "13.5 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_007_1.jpg", "IDCRI_007_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_008",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "10 mm",
+    condition: "",
+    notes: "Peut-être Apiocrinites elegans.",
+    images: ["IDCRI_008_1.jpg", "IDCRI_008_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_009",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "7 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCRI_009_1.jpg", "IDCRI_009_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "CRI_010",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "6 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCRI_010_1.jpg", "IDCRI_010_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+   {
+    id: "CRI_011",
+    kingdom: "Animaux",
+    group: "Crinoïdes",
+    genus: "Apiocrinites",
+    species: "sp.",
+    author: "",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2026",
+    size: "21 mm",
+    condition: "",
+    notes: "",
+    images: ["IDCRI_011_1.jpg", "IDCRI_011_2.jpg"],
+    tags: ["Apiocrinites", "Jurassique", "Entroque"]
+  },
+  {
+    id: "TER_001",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2023",
+    size: "14 mm",
+    condition: "Complet, valves fermées",
+    notes: "",
+    images: ["IDTER_001_front.jpg", "IDTER_001_up.jpg", "IDTER_001_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+ {
+    id: "TER_002",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "13 mm",
+    condition: "Complet, valves fermées",
+    notes: "",
+    images: ["IDTER_002_front.jpg", "IDTER_002_up.jpg", "IDTER_002_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+ {
+    id: "TER_003",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2023",
+    size: "11 mm",
+    condition: "Mauvaise condition, valves fermées",
+    notes: "",
+    images: ["IDTER_003_front.jpg", "IDTER_003_up.jpg", "IDTER_003_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+ {
+    id: "TER_004",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2024",
+    size: "10 mm",
+    condition: "Mauvaise condition, valves fermées",
+    notes: "",
+    images: ["IDTER_004_front.jpg", "IDTER_004_up.jpg", "IDTER_004_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+ {
+    id: "TER_005",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "14 mm",
+    condition: "Mauvaise condition, valves fermées",
+    notes: "",
+    images: ["IDTER_005_front.jpg", "IDTER_005_up.jpg", "IDTER_005_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+ {
+    id: "TER_006",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Dictyothyris",
+    species: "coarctata",
+    author: "Parkinson, 1811",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2024",
+    size: "12 mm",
+    condition: "Mauvaise condition, valves fermées",
+    notes: "",
+    images: ["IDTER_006_front.jpg", "IDTER_006_up.jpg", "IDTER_006_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+   {
+    id: "TER_007",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Flabellothyris",
+    species: "flabellum",
+    author: "Deslongchamps, 1884",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "8 mm",
+    condition: "Bonne condition, valves fermées",
+    notes: "",
+    images: ["IDTER_007_front.jpg", "IDTER_007_up.jpg", "IDTER_007_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+   {
+    id: "TER_008",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Flabellothyris",
+    species: "flabellum",
+    author: "Deslongchamps, 1884",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "7 mm",
+    condition: "Condition moyenne, valves fermées",
+    notes: "",
+    images: ["IDTER_008_front.jpg", "IDTER_008_up.jpg", "IDTER_008_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+     {
+    id: "TER_009",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Flabellothyris",
+    species: "flabellum",
+    author: "Deslongchamps, 1884",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2025",
+    size: "6.5 mm",
+    condition: "Condition moyenne, valves fermées",
+    notes: "",
+    images: ["IDTER_009_front.jpg", "IDTER_009_up.jpg", "IDTER_009_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+     {
+    id: "TER_010",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Flabellothyris",
+    species: "flabellum",
+    author: "Deslongchamps, 1884",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2024",
+    size: "6 mm",
+    condition: "Mauvaise condition, valves fermées",
+    notes: "",
+    images: ["IDTER_010_front.jpg", "IDTER_010_up.jpg", "IDTER_010_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_011",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_011_up.jpg", "IDTER_011_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_012",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Beaucoup de gangue mais bonne condition.",
+    notes: "",
+    images: ["IDTER_012_up.jpg", "IDTER_012_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_013",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Condition moyenne.",
+    notes: "Transformé partiellement en quartz ?",
+    images: ["IDTER_013_up.jpg", "IDTER_013_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_014",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_014_up.jpg", "IDTER_014_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_015",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23",
+    condition: "Un peu de gangue, mais surtout écrasé dorso-ventralement.",
+    notes: "",
+    images: ["IDTER_015_up.jpg", "IDTER_015_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_016",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23 mm",
+    condition: "Écrasé latéralement.",
+    notes: "",
+    images: ["IDTER_016_up.jpg", "IDTER_016_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_017",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "17 mm",
+    condition: "Condition relativement bonne.",
+    notes: "",
+    images: ["IDTER_017_up.jpg", "IDTER_017_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_018",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_018_up.jpg", "IDTER_018_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_019",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "24 mm",
+    condition: "Un peu de gangue mais bonne condition.",
+    notes: "",
+    images: ["IDTER_019_up.jpg", "IDTER_019_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_020",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_020_up.jpg", "IDTER_020_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_021",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "16 mm",
+    condition: "Aplati latéralement.",
+    notes: "",
+    images: ["IDTER_021_up.jpg", "IDTER_021_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_022",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_022_up.jpg", "IDTER_022_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_023",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Gangue, et condition moyenne.",
+    notes: "",
+    images: ["IDTER_023_up.jpg", "IDTER_023_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_024",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Écrasé latéralement.",
+    notes: "",
+    images: ["IDTER_024_up.jpg", "IDTER_024_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_025",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Écrasé sur la surface supérieure.",
+    notes: "",
+    images: ["IDTER_025_up.jpg", "IDTER_025_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_026",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "12 mm",
+    condition: "Très bonne condition.",
+    notes: "",
+    images: ["IDTER_026_up.jpg", "IDTER_026_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_027",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_027_up.jpg", "IDTER_027_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_028",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_028_up.jpg", "IDTER_028_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_029",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_029_up.jpg", "IDTER_029_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_030",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_030_up.jpg", "IDTER_030_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_031",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "15 mm",
+    condition: "Très bonne condition.",
+    notes: "",
+    images: ["IDTER_031_up.jpg", "IDTER_031_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_032",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_032_up.jpg", "IDTER_032_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_033",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Gangue et condition moyenne.",
+    notes: "",
+    images: ["IDTER_033_up.jpg", "IDTER_033_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_034",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_034_up.jpg", "IDTER_034_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  
+  {
+    id: "TER_035",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "16 mm",
+    condition: "Condition moyenne, gangue.",
+    notes: "",
+    images: ["IDTER_035_up.jpg", "IDTER_035_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_036",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_036_up.jpg", "IDTER_036_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_037",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "23 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_037_up.jpg", "IDTER_037_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_038",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "22 mm",
+    condition: "Bonne condition, gangue.",
+    notes: "",
+    images: ["IDTER_038_up.jpg", "IDTER_038_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_039",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "22 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_039_up.jpg", "IDTER_039_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_040",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Bonne condition mais gangue.",
+    notes: "",
+    images: ["IDTER_040_up.jpg", "IDTER_040_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_041",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Condition moyenne, gangue.",
+    notes: "",
+    images: ["IDTER_041_up.jpg", "IDTER_041_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_042",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_042_up.jpg", "IDTER_042_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_043",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_043_up.jpg", "IDTER_043_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_044",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_044_up.jpg", "IDTER_044_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_045",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_045_up.jpg", "IDTER_045_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_046",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "22 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_046_up.jpg", "IDTER_046_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_047",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "15 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_047_up.jpg", "IDTER_047_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_048",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Condition moyenne.",
+    notes: "Restes d'oursin sur les deux faces ?",
+    images: ["IDTER_048_up.jpg", "IDTER_048_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_049",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Mauvaise condition",
+    notes: "",
+    images: ["IDTER_049_up.jpg", "IDTER_049_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_050",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Très mauvaise condition.",
+    notes: "",
+    images: ["IDTER_050_up.jpg", "IDTER_050_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_051",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "22 mm",
+    condition: "Mauvaise condition : aplati latéralement.",
+    notes: "",
+    images: ["IDTER_051_up.jpg", "IDTER_051_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_052",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_052_up.jpg", "IDTER_052_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_053",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "17 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_053_up.jpg", "IDTER_053_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_054",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Condition moyenne. Cristaux.",
+    notes: "",
+    images: ["IDTER_054_up.jpg", "IDTER_054_down.jpg", "IDTER_054_a.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_055",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Mauvaise condition.",
+    notes: "",
+    images: ["IDTER_055_up.jpg", "IDTER_055_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_056",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Condition moyenne",
+    notes: "",
+    images: ["IDTER_056_up.jpg", "IDTER_056_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_057",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_057_up.jpg", "IDTER_057_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_058",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "21 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_058_up.jpg", "IDTER_058_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_059",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "19 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_059_up.jpg", "IDTER_059_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_060",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "15 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_060_up.jpg", "IDTER_060_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_061",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "18 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_061_up.jpg", "IDTER_061_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_062",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "20 mm",
+    condition: "Bonne condition.",
+    notes: "",
+    images: ["IDTER_062_up.jpg", "IDTER_062_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "TER_063",
+    kingdom: "Animaux",
+    group: "Brachiopodes",
+    genus: "Digonella",
+    species: "digona",
+    author: "Sowerby, 1815",
+    stage: "Bathonien",
+    formation: "",
+    locality: "Normandie",
+    date: "2018-2026",
+    size: "17.5 mm",
+    condition: "Condition moyenne.",
+    notes: "",
+    images: ["IDTER_063_up.jpg", "IDTER_063_down.jpg"],
+    tags: ["Térébratules", "Jurassique"]
+  },
+  {
+    id: "GAS_001",
+    kingdom: "Animaux",
+    group: "Gastéropodes",
+    genus: "Gastéropode",
+    species: "",
+    author: "",
+    stage: "Hettangien-Sinémurien-Carixien",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "7 mm",
+    condition: "Peu de caractères discernables",
+    notes: "",
+    images: ["IDGAS_001.jpg"],
+    tags: ["Gastéropodes", "Jurassique"]
+  },
+      {
+    id: "PLA_001",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cf.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "10 mm",
+    condition: "Difficile de voir le relief. Trois exemplaires similaires sur le même bloc.",
+    notes: "",
+    images: ["IDPLA_001_up.jpg", "IDPLA_001_up2.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_002",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cf.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "La plus longue trace fait 23 mm",
+    condition: "Difficile de voir l'impression 'doré'/'en pyrite'.",
+    notes: "",
+    images: ["IDPLA_002.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_003",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cf.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "10 mm",
+    condition: "Difficile de voir l'impression 'doré'/'en pyrite'.",
+    notes: "",
+    images: ["IDPLA_003.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_004",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cf.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "7 mm",
+    condition: "Difficile de voir l'impression 'doré'/'en pyrite'.",
+    notes: "",
+    images: ["IDPLA_004.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_005",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cyathea",
+    author: "Brongniart, 1828",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "35 mm",
+    condition: "Présence de PLA_006 sur le même fragment.",
+    notes: "",
+    images: ["IDPLA_005.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_006",
+    kingdom: "Plantes",
+    group: "Équisetales",
+    genus: "Calamites",
+    species: "sp.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "35 mm",
+    condition: "Présence de PLA_005 sur le même fragment.",
+    notes: "Pourrait également être Sphenophyllum oblongifolium, car le nombre de feuilles par verticille n'est pas clair (8 par verticilles à première vue)",
+    images: ["IDPLA_006.jpg"],
+    tags: ["Plantes", "Annularia", "Carbonifère"]
+  },
+  {
+    id: "PLA_007",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "cyathea",
+    author: "Brongniart, 1828",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "85 mm",
+    condition: "Présence de PLA_008 sur le même fragment.",
+    notes: "",
+    images: ["IDPLA_007.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "PLA_008",
+    kingdom: "Plantes",
+    group: "Fougères",
+    genus: "Pecopteris",
+    species: "sp.",
+    author: "",
+    stage: "Stéphanien inférieur",
+    formation: "",
+    locality: "Savoie",
+    date: "2026",
+    size: "13 mm",
+    condition: "Présence de PLA_007 sur le même fragment.",
+    notes: "",
+    images: ["IDPLA_008_1.jpg", "IDPLA_008_2.jpg"],
+    tags: ["Plantes", "Carbonifère"]
+  },
+  {
+    id: "RHY-001",
+    kingdom: "Animaux",
+    group: "Rhynchonelles",
+    genus: "Rhynchonella",
+    species: "wisniowskii",
+    author: "Sokolowski, 1887",
+    stage: "Callovien",
+    formation: "Calcaires à polypiers",
+    locality: "Bugey (Ain)",
+    date: "2026-06-05",
+    size: "18 mm",
+    condition: "Valve dorsale légèrement érodée",
+    notes: "Plis costaux bien marqués",
+    images: [],
+    tags: ["brachiopodes", "jurassique"]
+  },
+  {
+    id: "PLA-001",
+    kingdom: "Plantes",
+    group: "Sphenophyllum",
+    genus: "Sphenophyllum",
+    species: "oblongifolium",
+    author: "(Germar & Kaulfuss) Unger, 1850",
+    stage: "",
+    formation: "",
+    locality: "",
+    date: "",
+    size: "",
+    condition: "",
+    notes: "",
+    images: [],
+    tags: ["flore fossile"]
+  },
+  {
+    id: "PLA-002",
+    kingdom: "Plantes",
+    group: "Pecopteris",
+    genus: "Pecopteris",
+    species: "cyathea",
+    author: "Brongniart, 1828",
+    stage: "",
+    formation: "",
+    locality: "",
+    date: "",
+    size: "",
+    condition: "",
+    notes: "",
+    images: [],
+    tags: ["flore fossile", "fougère"]
+  },
+  {
+    id: "PLA-003",
+    kingdom: "Plantes",
+    group: "Indéterminé",
+    genus: "Indéterminé",
+    species: "sp.",
+    author: "",
+    stage: "",
+    formation: "",
+    locality: "",
+    date: "",
+    size: "",
+    condition: "",
+    notes: "Feuille non identifiée",
+    images: [],
+    tags: ["flore fossile", "indéterminé"]
+  }
+];
+
+/* ============================================================
+   À PROPOS : modifie ces infos pour ton profil.
+   - photo : nom de fichier dans /images (ex: "moi.jpg"). Laisse ""
+     pour un placeholder.
+   - links : icon peut être "linkedin", "inaturalist" ou "gmail".
+   ============================================================ */
+const ABOUT_ME = {
+  name: "Gaspard",
+  role: "Naturaliste amateur · Myrmécologie & paléontologie",
+  photo: "",
+  bio: "Étudiant passionné de biologie évolutive et de fourmis, je récolte et catalogue des fossiles de plantes et d'animaux sur le terrain, principalement en Normandie et en Savoie.",
+  links: [
+    { icon: "linkedin", label: "LinkedIn", url: "#" },
+    { icon: "inaturalist", label: "iNaturalist", url: "#" },
+    { icon: "gmail", label: "Email", url: "mailto:#" }
+  ]
+};
+
+const ICONS = {
+  linkedin: { bg: "#0a66c2", svg: `<svg viewBox="0 0 24 24" fill="white"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.44-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>` },
+  inaturalist: { bg: "#74ac00", svg: `<svg viewBox="0 0 24 24" fill="white"><path d="M12 2C7 2 3 6.5 3 11.5c0 4 4.5 8.5 9 10.5 4.5-2 9-6.5 9-10.5C21 6.5 17 2 12 2zm0 6.5a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4z"/></svg>` },
+  gmail: { bg: "#c8342c", svg: `<svg viewBox="0 0 24 24" fill="white"><path d="M3 5.5h18a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1zm1.8 1.7L12 12.3l7.2-5.1H4.8zM20 8.8l-7.4 5.2a1 1 0 0 1-1.2 0L4 8.8v8h16v-8z"/></svg>` }
+};
+
+function renderAbout(){
+  const panel = document.getElementById("about-panel");
+  const a = ABOUT_ME;
+  const photoInner = a.photo
+    ? `<img src="images/${a.photo}" alt="${a.name}" style="width:100%;height:100%;object-fit:cover;">`
+    : "Ta photo ici";
+  const linksHTML = (a.links || []).map(l => {
+    const ic = ICONS[l.icon];
+    const iconHTML = ic ? `<span class="icon" style="background:${ic.bg}">${ic.svg}</span>` : "";
+    return `<a class="about-link" href="${l.url}" target="_blank" rel="noopener">${iconHTML}${l.label}</a>`;
+  }).join("");
+
+  panel.innerHTML = `
+    <div class="about-card">
+      <div class="about-photo">${photoInner}</div>
+      <h2 class="about-name">${a.name}</h2>
+      <div class="about-role">${a.role}</div>
+      <p class="about-bio">${a.bio}</p>
+      <div class="about-links">${linksHTML}</div>
+    </div>
+  `;
+}
+
+/* ============================================================ */
+
+let activeView = "gallery"; // "gallery" | "about"
+let activeKingdom = "all";
+let activeGroup = "all";
+let searchTerm = "";
+let sortBy = "genus"; // "genus" | "date"
+let sortDir = "asc";  // "asc" | "desc"
+
+function renderStats(){
+  const total = SPECIMENS.length;
+  const plantes = SPECIMENS.filter(s => s.kingdom === "Plantes").length;
+  const animaux = SPECIMENS.filter(s => s.kingdom === "Animaux").length;
+  document.getElementById("stats-row").innerHTML = `
+    <div class="stat"><span class="n">${total}</span><span class="l">Spécimens</span></div>
+    <div class="stat"><span class="n">${plantes}</span><span class="l">Plantes</span></div>
+    <div class="stat"><span class="n">${animaux}</span><span class="l">Animaux</span></div>
+  `;
+}
+
+function matchesSearch(s, term){
+  if(!term) return true;
+  const hay = `${s.genus} ${s.species} ${s.locality} ${s.stage} ${s.id} ${s.group} ${(s.tags || []).join(" ")}`.toLowerCase();
+  return hay.includes(term.toLowerCase());
+}
+
+function parseDateValue(d){
+  if(!d) return null;
+  const value = /^\d{4}$/.test(d) ? `${d}-01-01` : d;
+  const t = new Date(value).getTime();
+  return isNaN(t) ? null : t;
+}
+
+function sortSpecimens(list){
+  const sorted = [...list];
+  sorted.sort((a, b) => {
+    if(sortBy === "genus"){
+      const cmp = a.genus.localeCompare(b.genus, "fr", { sensitivity: "base" });
+      return sortDir === "asc" ? cmp : -cmp;
+    }
+    // sortBy === "date"
+    const da = parseDateValue(a.date);
+    const db = parseDateValue(b.date);
+    if(da === null && db === null) return 0;
+    if(da === null) return 1;
+    if(db === null) return -1;
+    return sortDir === "asc" ? da - db : db - da;
+  });
+  return sorted;
+}
+
+function renderMainTabs(){
+  const wrap = document.getElementById("tabs-main");
+  const items = [
+    { type: "sort", key: "genus", label: sortBy === "genus" ? `Genre ${sortDir === "asc" ? "↑" : "↓"}` : "Genre", title: "Trier par genre, tous règnes confondus — cliquer pour inverser l'ordre", active: activeView === "gallery" && sortBy === "genus" },
+    { type: "sort", key: "date", label: sortBy === "date" ? `Date ${sortDir === "asc" ? "↑" : "↓"}` : "Date", title: "Trier par date de récolte — cliquer pour inverser l'ordre", active: activeView === "gallery" && sortBy === "date" },
+    { type: "kingdom", key: "all", label: "Tout", active: activeView === "gallery" && activeKingdom === "all" },
+    { type: "kingdom", key: "Plantes", label: "Plantes", active: activeView === "gallery" && activeKingdom === "Plantes" },
+    { type: "kingdom", key: "Animaux", label: "Animaux", active: activeView === "gallery" && activeKingdom === "Animaux" },
+    { type: "view", key: "about", label: "À propos", active: activeView === "about" },
+  ];
+  wrap.innerHTML = items.map(it => `<button class="tab ${it.active ? "active" : ""}" data-type="${it.type}" data-key="${it.key}"${it.title ? ` title="${it.title}"` : ""}>${it.label}</button>`).join("");
+  wrap.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const type = btn.dataset.type;
+      const key = btn.dataset.key;
+      if(type === "sort"){
+        activeView = "gallery";
+        if(sortBy === key){
+          sortDir = sortDir === "asc" ? "desc" : "asc";
+        } else {
+          sortBy = key;
+          sortDir = "asc";
+        }
+      } else if(type === "view"){
+        activeView = "about";
+      } else {
+        activeView = "gallery";
+        activeKingdom = key;
+        activeGroup = "all";
+        renderSubTabs();
+      }
+      renderMainTabs();
+      applyView();
+      render();
+    });
+  });
+}
+
+function applyView(){
+  const gallery = document.getElementById("gallery");
+  const about = document.getElementById("about-panel");
+  const search = document.getElementById("search");
+  const subtabs = document.getElementById("tabs-group");
+  if(activeView === "about"){
+    gallery.hidden = true;
+    search.hidden = true;
+    subtabs.hidden = true;
+    about.hidden = false;
+    renderAbout();
+  } else {
+    gallery.hidden = false;
+    search.hidden = false;
+    about.hidden = true;
+    renderSubTabs();
+  }
+}
+
+function tagsHTML(s){
+  const tags = s.tags || [];
+  if(!tags.length) return "";
+  return `<div class="tags">${tags.map(t => `<span class="tag-pill" data-tag="${t}">${t}</span>`).join("")}</div>`;
+}
+
+function filterByTag(tag){
+  searchTerm = tag;
+  document.getElementById("search").value = tag;
+  activeView = "gallery";
+  activeKingdom = "all";
+  activeGroup = "all";
+  renderMainTabs();
+  applyView();
+  render();
+}
+
+function groupsFor(kingdom){
+  if(kingdom === "all") return [];
+  const set = new Set(SPECIMENS.filter(s => s.kingdom === kingdom).map(s => s.group));
+  return Array.from(set);
+}
+
+function familyClass(kingdom){
+  return kingdom === "Plantes" ? "rhy" : "";
+}
+
+function renderSubTabs(){
+  const wrap = document.getElementById("tabs-group");
+  const groups = groupsFor(activeKingdom);
+
+  if(activeView !== "gallery" || activeKingdom === "all" || groups.length <= 1){
+    wrap.hidden = true;
+    wrap.innerHTML = "";
+    return;
+  }
+
+  wrap.hidden = false;
+  wrap.innerHTML = `
+    <button class="tab ${activeGroup === 'all' ? 'active' : ''}" data-group="all">Tout — ${activeKingdom.toLowerCase()}</button>
+    ${groups.map(g => `<button class="tab ${activeGroup === g ? 'active' : ''}" data-group="${g}">${g}</button>`).join("")}
+  `;
+
+  wrap.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeGroup = btn.dataset.group;
+      renderSubTabs();
+      render();
+    });
+  });
+}
+
+function cardImageHTML(s){
+  const imgs = s.images || [];
+  if(imgs.length){
+    const count = imgs.length > 1
+      ? `<span class="card-image-count">1 / ${imgs.length}</span>`
+      : "";
+    return `<div class="card-image"><img src="images/${imgs[0]}" alt="${s.genus} ${s.species}" loading="lazy">${count}</div>`;
+  }
+  return `<div class="card-image placeholder">Pas encore<br>de photo</div>`;
+}
+
+function render(){
+  if(activeView !== "gallery") return;
+  const gallery = document.getElementById("gallery");
+  let filtered = SPECIMENS.filter(s => {
+    if(activeKingdom !== "all" && s.kingdom !== activeKingdom) return false;
+    if(activeKingdom !== "all" && activeGroup !== "all" && s.group !== activeGroup) return false;
+    return matchesSearch(s, searchTerm);
+  });
+
+  filtered = sortSpecimens(filtered);
+
+  if(filtered.length === 0){
+    gallery.innerHTML = `<div class="empty-state">Aucun spécimen ne correspond à cette recherche.</div>`;
+    return;
+  }
+
+  gallery.innerHTML = filtered.map((s, i) => `
+    <article class="card" data-index="${SPECIMENS.indexOf(s)}" tabindex="0">
+      <div class="pin"></div>
+      ${cardImageHTML(s)}
+      <div class="card-body">
+        <div class="catalog-no">${s.id}</div>
+        <h3 class="taxon">${s.genus} <em>${s.species}</em></h3>
+        ${s.locality ? `<div class="meta-line"><span class="k">Gisement</span>${s.locality}</div>` : ""}
+        ${s.stage ? `<div class="meta-line"><span class="k">Étage</span>${s.stage}</div>` : ""}
+        <span class="family-tag ${familyClass(s.kingdom)}">${s.group}</span>
+        ${tagsHTML(s)}
+      </div>
+    </article>
+  `).join("");
+
+  gallery.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("click", () => openModal(SPECIMENS[card.dataset.index]));
+    card.addEventListener("keydown", e => {
+      if(e.key === "Enter") openModal(SPECIMENS[card.dataset.index]);
+    });
+  });
+
+  gallery.querySelectorAll(".tag-pill").forEach(pill => {
+    pill.addEventListener("click", e => {
+      e.stopPropagation();
+      filterByTag(pill.dataset.tag);
+    });
+  });
+}
+
+let modalImages = [];
+let modalIndex = 0;
+
+function openModal(s){
+  const backdrop = document.getElementById("modal-backdrop");
+  const content = document.getElementById("modal-content");
+
+  modalImages = s.images || [];
+  modalIndex = 0;
+
+  const fields = [
+    ["Gisement", s.locality],
+    ["Étage géologique", s.stage],
+    ["Formation", s.formation],
+    ["Taille", s.size],
+    ["Date de récolte", s.date],
+    ["État", s.condition],
+  ].filter(([,v]) => v);
+
+  content.innerHTML = `
+    <button class="modal-close" aria-label="Fermer">×</button>
+    <div id="modal-image-slot"></div>
+    <div class="modal-body">
+      <div class="catalog-no">${s.id}${s.author ? " · " + s.author : ""}</div>
+      <h2 class="taxon">${s.genus} <em>${s.species}</em></h2>
+      <span class="family-tag ${familyClass(s.kingdom)}">${s.group}</span>
+      ${tagsHTML(s)}
+      <div class="modal-grid">
+        ${fields.map(([k,v]) => `<div class="field"><span class="k">${k}</span><span class="v">${v}</span></div>`).join("")}
+        <div class="field full"><span class="k">Remarques</span><span class="v">${s.notes || "—"}</span></div>
+      </div>
+    </div>
+  `;
+  content.querySelector(".modal-close").addEventListener("click", closeModal);
+  content.querySelectorAll(".tag-pill").forEach(pill => {
+    pill.addEventListener("click", e => {
+      e.stopPropagation();
+      closeModal();
+      filterByTag(pill.dataset.tag);
+    });
+  });
+  renderModalImage(s);
+  backdrop.classList.add("open");
+}
+
+function renderModalImage(s){
+  const slot = document.getElementById("modal-image-slot");
+  if(!slot) return;
+
+  if(modalImages.length === 0){
+    slot.innerHTML = `<div class="modal-image"></div>`;
+    return;
+  }
+
+  const navHTML = modalImages.length > 1 ? `
+    <button class="modal-nav prev" aria-label="Photo précédente">‹</button>
+    <button class="modal-nav next" aria-label="Photo suivante">›</button>
+    <div class="modal-counter">${modalIndex + 1} / ${modalImages.length}</div>
+  ` : "";
+
+  slot.innerHTML = `
+    <div class="modal-image">
+      <img src="images/${modalImages[modalIndex]}" alt="${s.genus} ${s.species}">
+      ${navHTML}
+    </div>
+    ${modalImages.length > 1 ? `
+      <div class="modal-thumbs">
+        ${modalImages.map((img, i) => `<img src="images/${img}" data-i="${i}" class="${i === modalIndex ? 'active' : ''}" alt="Miniature ${i+1}">`).join("")}
+      </div>
+    ` : ""}
+  `;
+
+  if(modalImages.length > 1){
+    slot.querySelector(".prev").addEventListener("click", e => { e.stopPropagation(); prevModalImage(s); });
+    slot.querySelector(".next").addEventListener("click", e => { e.stopPropagation(); nextModalImage(s); });
+    slot.querySelectorAll(".modal-thumbs img").forEach(t => {
+      t.addEventListener("click", () => { modalIndex = Number(t.dataset.i); renderModalImage(s); });
+    });
+  }
+}
+
+function prevModalImage(s){
+  modalIndex = (modalIndex - 1 + modalImages.length) % modalImages.length;
+  renderModalImage(s);
+}
+
+function nextModalImage(s){
+  modalIndex = (modalIndex + 1) % modalImages.length;
+  renderModalImage(s);
+}
+
+function closeModal(){
+  document.getElementById("modal-backdrop").classList.remove("open");
+}
+
+document.getElementById("modal-backdrop").addEventListener("click", e => {
+  if(e.target.id === "modal-backdrop") closeModal();
+});
+document.addEventListener("keydown", e => {
+  const isOpen = document.getElementById("modal-backdrop").classList.contains("open");
+  if(e.key === "Escape") closeModal();
+  if(isOpen && modalImages.length > 1){
+    if(e.key === "ArrowLeft"){
+      const s = SPECIMENS.find(sp => sp.images === modalImages);
+      prevModalImage(s);
+    }
+    if(e.key === "ArrowRight"){
+      const s = SPECIMENS.find(sp => sp.images === modalImages);
+      nextModalImage(s);
+    }
+  }
+});
+
+document.getElementById("search").addEventListener("input", e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+renderStats();
+renderMainTabs();
+applyView();
+render();
+</script>
+
+</body>
+</html>
