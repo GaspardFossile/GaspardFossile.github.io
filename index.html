@@ -647,17 +647,7 @@
 <footer>Cabinet de curiosités — mis à jour manuellement dans specimens.js</footer>
 
 <script>
-/* ============================================================
-   TES SPÉCIMENS : modifie ce tableau pour ajouter tes fossiles.
-   - images : tableau de noms de fichiers dans le dossier /images
-     (ex: ["ter001-a.jpg", "ter001-b.jpg"]). Laisse [] si tu n'as
-     pas encore de photo, un placeholder s'affichera. Avec 2 photos
-     ou plus, une navigation (flèches + vignettes) apparaît.
-   - tags : tableau de mots-clés libres (ex: ["brachiopodes",
-     "ammonites", "jurassique"]). Cliquer sur un tag filtre la
-     collection. Laisse [] si tu n'en veux pas.
-   - family : "Térébratules" ou "Rhynchonelles"
-   ============================================================ */
+
 const SPECIMENS = [
     {
     id: "AMM_001",
@@ -2607,14 +2597,14 @@ const SPECIMENS = [
    - links : icon peut être "linkedin", "inaturalist" ou "gmail".
    ============================================================ */
 const ABOUT_ME = {
-  name: "Gaspard",
-  role: "Naturaliste amateur · Myrmécologie & paléontologie",
+  name: "Gaspard François",
+  role: "Naturaliste amateur · Étudiant",
   photo: "",
-  bio: "Étudiant passionné de biologie évolutive et de fourmis, je récolte et catalogue des fossiles de plantes et d'animaux sur le terrain, principalement en Normandie et en Savoie.",
+  bio: "Étudiant en Master 1 de Biologie Évolutive, je récolte et catalogue des fossiles de plantes et d'animaux sur le terrain, principalement en Normandie et en Savoie.",
   links: [
-    { icon: "linkedin", label: "LinkedIn", url: "#" },
-    { icon: "inaturalist", label: "iNaturalist", url: "#" },
-    { icon: "gmail", label: "Email", url: "mailto:#" }
+    { icon: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/in/gaspard-fran%C3%A7ois-3b53b2181/" },
+    { icon: "inaturalist", label: "iNaturalist", url: "https://www.inaturalist.org/people/10171273" },
+    { icon: "gmail", label: "Email", url: "mailto:gaspard.francois.pro@gmail.com" }
   ]
 };
 
@@ -2629,7 +2619,7 @@ function renderAbout(){
   const a = ABOUT_ME;
   const photoInner = a.photo
     ? `<img src="images/${a.photo}" alt="${a.name}" style="width:100%;height:100%;object-fit:cover;">`
-    : "Ta photo ici";
+    : "";
   const linksHTML = (a.links || []).map(l => {
     const ic = ICONS[l.icon];
     const iconHTML = ic ? `<span class="icon" style="background:${ic.bg}">${ic.svg}</span>` : "";
