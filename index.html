@@ -2740,15 +2740,17 @@ function applyView(){
   const search = document.getElementById("search");
   const subtabs = document.getElementById("tabs-group");
   if(activeView === "about"){
-    gallery.hidden = true;
-    search.hidden = true;
+    gallery.style.display = "none";
+    search.style.display = "none";
     subtabs.hidden = true;
     about.hidden = false;
+    about.style.display = "block";
     renderAbout();
   } else {
-    gallery.hidden = false;
-    search.hidden = false;
+    gallery.style.display = "grid";
+    search.style.display = "";
     about.hidden = true;
+    about.style.display = "none";
     renderSubTabs();
   }
 }
